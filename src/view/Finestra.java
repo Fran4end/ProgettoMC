@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import model.scacchiera.Scacchiera;
 public class Finestra {
@@ -24,17 +25,7 @@ public class Finestra {
         frame.setTitle("Progetto MC");
         frame.setMinimumSize(new Dimension(500, 600));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-
-        try {
-            resizeFile(".\\src\\view\\seta.jpg", ".\\src\\view\\seta1.png", 100, 100);
-            resizeFile(".\\src\\view\\energia.png", ".\\src\\view\\energia1.png", 100, 100);
-            resizeFile(".\\src\\view\\agente.jpg", ".\\src\\view\\agente1.jpg", 100, 100);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
+        frame.setVisible(true);        
     }
 
     private void setupUI(){
@@ -78,66 +69,47 @@ public class Finestra {
         /**
          *  *Pannello Scacchiera
          */
-        //working in progress
         JPanel scacc = new JPanel(){
-            public void paint(Graphics g){
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
                 ImageIcon img;
-                for(int i = 0; i < sca.getLenx(); i++){
-                    for(int j = 0; j < sca.getLeny(); j++){
+                int x = 0;
+                for(int i = 0; i < (sca.getLenx()*10)-1; i+=10){
+                    int y =0;
+                    for(int j = 0; j < (sca.getLeny()*10)-1; j+=10){
                         g.setColor(Color.BLACK);
-                        if(sca.getCasella(i, j).getInfo().equals("vuota")){
-                            g.drawRect(i*5, j*5, 100, 100);  
-                            //tab += "|x|";
-                        }else if(sca.getCasella(i, j).getInfo().contains("Seta")){
+                        if(sca.getCasella(x, y).getInfo().equals("vuota")){
+                            g.drawRect(i, j, 10, 10);  
+                        }else if(sca.getCasella(x, y).getInfo().contains("Seta")){
                             img = new ImageIcon(".\\src\\view\\seta1.png");
-                            g.drawImage( img.getImage(), i*5, j*5, 100, 100, null);    
-                            //tab += "|S|";
-                        }else if(sca.getCasella(i, j).getInfo().contains("Energia")){
+                            g.drawImage( img.getImage(), i, j, 10, 10, null);    
+                        }else if(sca.getCasella(x, y).getInfo().contains("Energia")){
                             img = new ImageIcon(".\\src\\view\\energia1.png");
-                            g.drawImage( img.getImage(), i*5, j*5, 100, 100, null);    
-                            //tab += "|E|"; 
+                            g.drawImage( img.getImage(), i, j, 10, 10, null);    
                         }else{
                             img = new ImageIcon(".\\src\\view\\agente1.png");
-                            g.drawImage( img.getImage(), i*5, j*5, 100, 100, null);
-                            //tab += "|O|";
+                            g.drawImage( img.getImage(), i, j, 10, 10, null);
                         }
-                            
+                        y++;
                     }
+                    x++;
                 }
             }
         };
+        
         JTextArea OutPut = new JTextArea();
         OutPut.append(sca.toString());
         OutPut.setEditable(false);
         
         JScrollPane scrollPane1 = new JScrollPane(scacc);
-        scrollPane1.setEnabled(true);
+        scrollPane1.setPreferredSize(new Dimension(200,200));
+        scrollPane1.setAutoscrolls(true);
+        scrollPane1.repaint();
 
         /**
          * * Pannello Principale
          */
         mainPanel.add(statisticsPanel, BorderLayout.PAGE_END);
-        mainPanel.add(scacc, BorderLayout.CENTER);
+        mainPanel.add(scrollPane1, BorderLayout.CENTER);
     }
-
-    private static void resizeFile(String imagePathToRead,
-                              String imagePathToWrite, int resizeWidth, int resizeHeight)
-            throws IOException {
-
-        File fileToRead = new File(imagePathToRead);
-        BufferedImage bufferedImageInput = ImageIO.read(fileToRead);
-
-        BufferedImage bufferedImageOutput = new BufferedImage(resizeWidth,
-                resizeHeight, bufferedImageInput.getType());
-
-        Graphics2D g2d = bufferedImageOutput.createGraphics();
-        g2d.drawImage(bufferedImageInput, 0, 0, resizeWidth, resizeHeight, null);
-        g2d.dispose();
-
-        String formatName = imagePathToWrite.substring(imagePathToWrite
-                .lastIndexOf(".") + 1);
-
-        ImageIO.write(bufferedImageOutput, formatName, new File(imagePathToWrite));
-    }
-
 }
