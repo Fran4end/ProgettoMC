@@ -17,10 +17,10 @@ public class Finestra {
 
         frame = new JFrame();
         setupUI();
-        frame.add(mainPanel);
+        frame.getContentPane().add(mainPanel);
         frame.setTitle("Progetto MC");
-        frame.setMinimumSize(new Dimension(500, 600));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setMinimumSize(new Dimension(600, 700));
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);        
     }
@@ -66,28 +66,30 @@ public class Finestra {
         /**
          *  *Pannello Scacchiera
          */
+        int h = 30, w = 30;
         JPanel scacc = new JPanel(){
             public void paintComponent(Graphics g){
                 super.paintComponent(g);
                 ImageIcon img;
+                
                 int x = 0;
-                for(int i = 0; i < (sca.getLenx()*10)-1; i+=10){
+                for(int i = 0; i < (sca.getLenx()*h); i+=h){
                     int y =0;
-                    for(int j = 0; j < (sca.getLeny()*10)-1; j+=10){
+                    for(int j = 0; j < (sca.getLeny()*w); j+=w){
                         g.setColor(Color.BLACK);
-                        g.fillRect(i, j, 10, 10);
+                        g.fillRect(i, j, h, w);
                         if(sca.getCasella(x, y).getInfo().equals("vuota")){
-                            g.setColor(Color.WHITE);
-                            g.fillRect(i, j, 9, 9);
+                            g.setColor(new Color(255,255,255));
+                            g.fillRect(i, j, h-1, w-1);
                         }else if(sca.getCasella(x, y).getInfo().contains("Seta")){
                             img = new ImageIcon(".\\src\\view\\seta1.png");
-                            g.drawImage( img.getImage(), i, j, 9, 9, null);    
+                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
                         }else if(sca.getCasella(x, y).getInfo().contains("Energia")){
                             img = new ImageIcon(".\\src\\view\\energia1.png");
-                            g.drawImage( img.getImage(), i, j, 9, 9, null);    
+                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
                         }else{
                             img = new ImageIcon(".\\src\\view\\agente1.png");
-                            g.drawImage( img.getImage(), i, j, 9, 9, null);
+                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);
                         }
                         y++;
                     }
@@ -95,6 +97,7 @@ public class Finestra {
                 }
             }
         };
+        scacc.setPreferredSize(new Dimension((sca.getLenx()*h)+1, (sca.getLeny()*w)+1));
         
         JTextArea OutPut = new JTextArea();
         OutPut.append(sca.toString());
@@ -102,12 +105,12 @@ public class Finestra {
         
         JScrollPane scrollPane1 = new JScrollPane(scacc);
         scrollPane1.setAutoscrolls(true);
-        scrollPane1.repaint();
+        scrollPane1.setViewportBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         /**
          * * Pannello Principale
          */
         mainPanel.add(statisticsPanel, BorderLayout.PAGE_END);
-        mainPanel.add(scrollPane1, BorderLayout.CENTER);
+        mainPanel.add(scrollPane1);
     }
 }
