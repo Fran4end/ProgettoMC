@@ -1,11 +1,7 @@
 package view;
 
-import java.io.*;
 import java.awt.*;
-import java.awt.image.*;
-import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import model.scacchiera.Scacchiera;
 public class Finestra {
@@ -25,6 +21,7 @@ public class Finestra {
         frame.setTitle("Progetto MC");
         frame.setMinimumSize(new Dimension(500, 600));
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);        
     }
 
@@ -78,17 +75,19 @@ public class Finestra {
                     int y =0;
                     for(int j = 0; j < (sca.getLeny()*10)-1; j+=10){
                         g.setColor(Color.BLACK);
+                        g.fillRect(i, j, 10, 10);
                         if(sca.getCasella(x, y).getInfo().equals("vuota")){
-                            g.drawRect(i, j, 10, 10);  
+                            g.setColor(Color.WHITE);
+                            g.fillRect(i, j, 9, 9);
                         }else if(sca.getCasella(x, y).getInfo().contains("Seta")){
                             img = new ImageIcon(".\\src\\view\\seta1.png");
-                            g.drawImage( img.getImage(), i, j, 10, 10, null);    
+                            g.drawImage( img.getImage(), i, j, 9, 9, null);    
                         }else if(sca.getCasella(x, y).getInfo().contains("Energia")){
                             img = new ImageIcon(".\\src\\view\\energia1.png");
-                            g.drawImage( img.getImage(), i, j, 10, 10, null);    
+                            g.drawImage( img.getImage(), i, j, 9, 9, null);    
                         }else{
                             img = new ImageIcon(".\\src\\view\\agente1.png");
-                            g.drawImage( img.getImage(), i, j, 10, 10, null);
+                            g.drawImage( img.getImage(), i, j, 9, 9, null);
                         }
                         y++;
                     }
@@ -102,7 +101,6 @@ public class Finestra {
         OutPut.setEditable(false);
         
         JScrollPane scrollPane1 = new JScrollPane(scacc);
-        scrollPane1.setPreferredSize(new Dimension(200,200));
         scrollPane1.setAutoscrolls(true);
         scrollPane1.repaint();
 
