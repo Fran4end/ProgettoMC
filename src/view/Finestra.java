@@ -67,36 +67,8 @@ public class Finestra {
          *  *Pannello Scacchiera
          */
         int h = 30, w = 30;
-        JPanel scacc = new JPanel(){
-            public void paintComponent(Graphics g){
-                super.paintComponent(g);
-                ImageIcon img;
-                
-                int x = 0;
-                for(int i = 0; i < (sca.getLenx()*h); i+=h){
-                    int y =0;
-                    for(int j = 0; j < (sca.getLeny()*w); j+=w){
-                        g.setColor(Color.BLACK);
-                        g.fillRect(i, j, h, w);
-                        if(sca.getCasella(x, y).getInfo().equals("vuota")){
-                            g.setColor(new Color(255,255,255));
-                            g.fillRect(i, j, h-1, w-1);
-                        }else if(sca.getCasella(x, y).getInfo().contains("Seta")){
-                            img = new ImageIcon(".\\src\\view\\seta1.png");
-                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
-                        }else if(sca.getCasella(x, y).getInfo().contains("Energia")){
-                            img = new ImageIcon(".\\src\\view\\energia1.png");
-                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
-                        }else{
-                            img = new ImageIcon(".\\src\\view\\agente1.png");
-                            g.drawImage( img.getImage(), i, j, h-1, w-1, null);
-                        }
-                        y++;
-                    }
-                    x++;
-                }
-            }
-        };
+        Disegno scacc = new Disegno(h, w, sca);
+
         scacc.setPreferredSize(new Dimension((sca.getLenx()*h)+1, (sca.getLeny()*w)+1));
         
         JTextArea OutPut = new JTextArea();
