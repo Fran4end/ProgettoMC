@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+
 import model.scacchiera.*;
 import java.awt.*;
 
@@ -16,8 +17,8 @@ public class Disegno extends JPanel{
     }
 
     @Override
-    public void print(Graphics g) {
-        super.print(g);
+    public void paint(Graphics g) {
+        super.paint(g);
         ImageIcon img;
         int x = 0;
         for(int i = 0; i < (sca.getLenx()*h); i+=h){
@@ -26,25 +27,21 @@ public class Disegno extends JPanel{
                 g.setColor(Color.BLACK);
                 g.fillRect(i, j, h, w);
                 if(sca.getCasella(x, y).getInfo().equals("vuota")){
-                    g.setColor(Color.BLACK);
+                    g.setColor(Color.WHITE);
                     g.fillRect(i, j, h-1, w-1);
+                }else if(sca.getCasella(x, y).getInfo().contains("Occupata")){
+                    img = new ImageIcon(".\\src\\view\\agente1.jpg");
+                    g.drawImage( img.getImage(), i, j, h-1, w-1, null);
                 }else if(sca.getCasella(x, y).getInfo().contains("Seta")){
                     img = new ImageIcon(".\\src\\view\\seta1.png");
                     g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
                 }else if(sca.getCasella(x, y).getInfo().contains("Energia")){
                     img = new ImageIcon(".\\src\\view\\energia1.png");
                     g.drawImage( img.getImage(), i, j, h-1, w-1, null);    
-                }else{
-                    img = new ImageIcon(".\\src\\view\\agente1.png");
-                    g.drawImage( img.getImage(), i, j, h-1, w-1, null);
                 }
                 y++;
             }
             x++;
         }
-    }
-
-    public void move(int x, int y){
-         
     }
 }

@@ -13,7 +13,7 @@ public class CasellaOccupata extends Decorator{
 
     @Override
     public String getInfo() {
-        return casella.getInfo().replace("vuota", agente.getName());
+        return casella.getInfo().replace("vuota", "Occupata");
     }
     
 }

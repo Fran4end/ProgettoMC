@@ -10,6 +10,7 @@ public class Finestra {
 
     private JFrame frame;
     private JPanel mainPanel;
+    private Disegno scacc; //inizializzo l'oggetto Disegno
     private final Font mainFont = new Font("Sogoe print", Font.BOLD, 18);
 
     public Finestra(Scacchiera sca) {
@@ -66,8 +67,8 @@ public class Finestra {
         /**
          *  *Pannello Scacchiera
          */
-        int h = 30, w = 30;
-        Disegno scacc = new Disegno(h, w, sca);
+        int h = 60, w = 60;
+        scacc = new Disegno(h, w, sca);//instanzo l'oggetto Disegno
 
         scacc.setPreferredSize(new Dimension((sca.getLenx()*h)+1, (sca.getLeny()*w)+1));
         
@@ -84,5 +85,13 @@ public class Finestra {
          */
         mainPanel.add(statisticsPanel, BorderLayout.PAGE_END);
         mainPanel.add(scrollPane1);
+    }
+
+    public Disegno getScacc() {
+        return scacc;
+    }
+
+    public void setScacc(Disegno scacc) {
+        this.scacc = scacc;
     }
 }

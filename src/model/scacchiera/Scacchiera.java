@@ -3,6 +3,7 @@ package model.scacchiera;
 import java.util.*;
 
 import model.Agente;
+import view.Finestra;
 
 public class Scacchiera {
 
@@ -10,7 +11,15 @@ public class Scacchiera {
     private int lenx;
     private int leny;
     private String tab;
+    private Finestra finestra;
 
+    public Scacchiera(int lenx, int leny, Finestra finestra) {
+        this.lenx = lenx;
+        this.leny = leny;
+        this.tab = "";
+        this.finestra = finestra;
+        generate();
+    }
     public Scacchiera(int lenx, int leny) {
         this.lenx = lenx;
         this.leny = leny;
@@ -24,7 +33,7 @@ public class Scacchiera {
             for(int j = 0; j < leny; j++){
                 Random r = new Random();
                 int rand = r.nextInt(100);
-                if(rand < 40) rand = 0;
+                if(rand < 60) rand = 0;
                 else if(rand < 90) rand = 1;
                 else rand = 2;
                 switch (rand) {
@@ -43,21 +52,44 @@ public class Scacchiera {
             }
         }
     }
+
     public void posAg(Agente agg){
-        boolean b = true;
+        scac[agg.getX()][agg.getY()] = new CasellaOccupata(agg, new ConcreteCasella());
+        /*boolean b = true;
         while (b) {
             Random r = new Random();
             int x = r.nextInt(100);
             int y = r.nextInt(100);
             if(getCasella(x, y).getInfo().equals("vuota")){
                 scac[x][y] = new CasellaOccupata(agg, new ConcreteCasella());
+                agg.setX(x);
+                agg.setY(y);
                 b=false;
             }
-        }
+        }*/
     }
 
     public Casella getCasella(int x, int y){
         return scac[x][y];
+    }
+
+    public void setCasella(int x, int y, Casella casella){
+        scac[x][y] = casella;
+    }
+
+    public void move(int x, int y, Agente agg){ //prende in input le cordinate della casella dove si sposta l'agente e l'agente stesso
+        Casella old = getCasella(agg.getX(), agg.getY());
+        Casella nuova = getCasella(x, y);
+        if(old.getInfo().contains("Energia"))
+            setCasella(agg.getX(), agg.getY(), new Energia(new ConcreteCasella(), agg.getX(), agg.getY()));
+        else
+            setCasella(agg.getX(), agg.getY(), new ConcreteCasella());
+        
+        setCasella(x, y, new CasellaOccupata(agg, nuova));
+        
+        agg.setX(x);
+        agg.setY(y);
+        finestra.getScacc().repaint();
     }
 
     public boolean pianta(int x, int y, Agente agg){
@@ -167,5 +199,11 @@ public class Scacchiera {
 
     public void setLeny(int leny) {
         this.leny = leny;
+    }
+    public Finestra getFinestra() {
+        return finestra;
+    }
+    public void setFinestra(Finestra finestra) {
+        this.finestra = finestra;
     }
 }
